@@ -235,11 +235,7 @@ platform :ios do
 
     find_bundle_id("com.#{TEAMID}.xdripswift")
 
-    match(
-      type: "appstore",
-      git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
-      app_identifier: [],
-    )
+
   end
 
   desc "Nuke Certs"
