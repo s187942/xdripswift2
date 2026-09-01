@@ -1,0 +1,38 @@
+```yaml
+name: 2. Nuke Certificates
+run-name: Nuke Certificates (${{ github.ref_name }})
+
+on:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate
+    uses: ./.github/workflows/validate_secrets.yml
+    secrets: inherit
+
+  nuke:
+    name: Nuke Certificates
+    needs: validate
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v5
+
+      - name: Install Project Dependencies
+        run: bundle install
+
+      - name: Sync clock
+        run: sudo sntp -sS time.windows.com
+
+      - name: Nuke Certificates
+        run: bundle exec fastlane nuke_certs
+        env:
+          TEAMID: ${{ secrets.TEAMID }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_KEY_ID: ${{ secrets.FASTLANE_KEY_ID }}
+          FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
+          FASTLANE_KEY: ${{ secrets.FASTLANE_KEY }}
+```
