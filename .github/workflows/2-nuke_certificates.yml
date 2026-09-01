@@ -1,4 +1,3 @@
-```yaml
 name: 2. Nuke Certificates
 run-name: Nuke Certificates (${{ github.ref_name }})
 
